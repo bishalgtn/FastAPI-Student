@@ -1,15 +1,16 @@
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-app = FastAPI()
 
 class Student(BaseModel):
     name: str
     section: str
     location: str
     exam_status :bool
-    phone_number: int
+    phone_number: IndentationError
 
+
+app = FastAPI()
 
 student_data = {
     102:{"id": 102,
@@ -30,18 +31,16 @@ def read_root():
 
 @app.get("/students/{student_id}")
 def student(student_id: int):
-    if student_id in student_data:
-        return student_data[student_id]
-    else:
-        return {"Error":f"students with id {student_id} does not exist"}
+    return student_data[student_id]
 
 @app.get("/students_with_path/{student_id}")
-def student_detail(student_id: int = Path):
+def student(student_id: int = Path):
     return student_data[student_id]
 
 @app.post("/create_student/{student_id}")
 def create_student(student_id: int, student: Student):
     if student_id in student_data:
         return {"Error": "student already exist with the student id"}
+    
     student_data[student_id] = student
     return student_data[student_id]
